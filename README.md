@@ -1,57 +1,63 @@
-# Gemini Discord Bot 🤖✨
+# Discord Chat Bot com Gemini 🤖
 
-A Discord bot that integrates with **Google Gemini AI** to respond to user messages and stores chat history using **SQLAlchemy**.
+Bot de Discord que conversa usando o **Google Gemini** e guarda o histórico recente de cada usuário em um banco de dados, para manter o contexto entre as mensagens.
 
----
+## Sobre
 
-⚠️ **Disclaimer:**  
-All comments and explanatory texts were translated and formatted by an AI (ChatGPT), but the entire source code was written and developed by **Erasmo da Silva Sá Junior**.
+Projeto pessoal para experimentar aplicações com modelos de linguagem (LLMs) dentro do Discord. O bot responde quando é mencionado ou quando alguém responde a uma mensagem dele, e usa as últimas interações daquele usuário no canal como contexto para a resposta.
 
----
+> Os comentários e textos explicativos do código foram traduzidos e formatados com ajuda de IA; o código foi escrito por Erasmo da Silva Sá Junior.
 
-## 🚀 Features
+## Funcionalidades
 
-- Responds to mentions or replies in Discord.
-- Integrates with Google Gemini for AI-based responses.
-- Stores user and message history in a database.
-- Automatically prunes older messages to keep the history clean.
-- Ignores bot messages.
-- Uses `.env` file for secure API key and DB config.
+- Responde quando o bot é **mencionado** ou quando alguém **responde a uma mensagem dele**.
+- Ignora mensagens de outros bots.
+- Gera as respostas com o **Google Gemini** (biblioteca `google-genai`), com um *system prompt* configurável.
+- Salva usuários e histórico de conversa (mensagem e resposta) com **SQLAlchemy**, separado por usuário e por canal.
+- Mantém só as **5 interações mais recentes** de cada usuário em cada canal, apagando as mais antigas.
+- Antes de responder, reenvia ao modelo o histórico salvo daquele usuário no canal, para dar contexto.
+- Lê as chaves e a URL do banco de um arquivo `.env`, sem nada sensível no código.
 
-## 🧠 Tech Stack
+## Tecnologias
 
 - [Python](https://www.python.org/)
-- [Discord.py](https://discordpy.readthedocs.io/)
+- [discord.py](https://discordpy.readthedocs.io/)
+- [Google Gen AI SDK (`google-genai`)](https://ai.google.dev/)
 - [SQLAlchemy](https://www.sqlalchemy.org/)
-- [Google Gemini AI](https://ai.google.dev/)
-- [dotenv](https://pypi.org/project/python-dotenv/)
+- [python-dotenv](https://pypi.org/project/python-dotenv/)
 
-## 📦 Requirements
+## Como rodar
 
-Install the required dependencies using pip:
+1. Instale as dependências:
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## ⚙️ Environment Setup
+2. Crie um arquivo `.env` na raiz do projeto:
 
-- Create a .env file in the root directory with the following variables:
-```env
-DISCORD_API_KEY=your_discord_bot_token
-DATABASE_URL=sqlite:///gemini_bot.db  # Or use your own DB engine
-GEMINI_API_KEY=your_google_gemini_key
-```
-## 🏁 How to Run
+   ```env
+   DISCORD_API_KEY=token_do_seu_bot
+   DATABASE_URL=sqlite:///gemini_bot.db   # ou a URL de outro banco suportado pelo SQLAlchemy
+   GEMINI_API_KEY=sua_chave_do_gemini
+   ```
 
-```bash
-python app.py
-```
+3. No [Discord Developer Portal](https://discord.com/developers/applications), ative o **Message Content Intent** do bot (o código usa `intents.message_content = True`).
 
-- Make sure to replace main.py with your actual filename.
+4. Em `app.py`, troque os valores de exemplo `system_prompt = 'System Prompt'` e `model="Gemini-Model"` pelo prompt desejado e por um modelo válido do Gemini.
 
-## 📜 License
+5. Inicie o bot:
 
-- This project is licensed under the [MIT License](./LICENSE).
+   ```bash
+   python app.py
+   ```
 
-> Developed with dedication by Erasmo da Silva Sá Junior.
+   Quando aparecer `Online!` no terminal, o bot está conectado.
+
+## Autor
+
+Desenvolvido por **Erasmo da Silva Sá Junior** — [GitHub](https://github.com/erasmossj) · [LinkedIn](https://www.linkedin.com/in/erasmo-junior-883010309/).
+
+## Licença
+
+Distribuído sob a [Licença MIT](./LICENSE).
